@@ -1,0 +1,19 @@
+:root{
+    --pryBg: #fcf9f9;
+    --secBg: #1ea7fd;
+    /* --secBg: #1b165f; */
+    --secLightBg:#1b165ff5;
+    --secLightBg2:#1b165fd3;
+    /* --secLightBg2:#d40a16; */
+    --terBg: #d40a16;
+    /* --terBg: #fdc500; */
+    --mainCol :#fefefe;
+    --offwhite: #f8f8f8;
+   --head: 'Amita-Regular';
+   --text: 'Philosopher-Regular';
+}
+
+body{
+    font-family: var(--text);
+    margin:0px;
+}

@@ -1,0 +1,10 @@
+ul  .update-download-icon{
+    position: relative;
+    top:2px !important;
+    margin-left: 4px;
+    
+}
+
+.update-download-icon > svg{
+    color: #1EA7FD;
+}

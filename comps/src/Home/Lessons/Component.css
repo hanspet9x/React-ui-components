@@ -1,0 +1,15 @@
+.vh-leave{
+    width:800px;
+    
+}
+
+h1 .update-download-icon{
+    position: relative;
+    top:6px;
+    margin-left: 4px;
+}
+@media(max-width: 400px){
+    .vh-leave{
+        width:310px;
+    }
+}

@@ -1,0 +1,22 @@
+#mini-web nav{
+    text-align: right;
+}
+
+#mini-web nav > span{
+    margin: 0px 15px;
+}
+
+#mw-header{
+    background-color: #efefef;
+    padding: 10px 0px;
+}
+#mw-main{
+    font-size: small;
+}
+
+#mw-main > button{
+    margin-top: 10px;
+}
+#mw-img{
+    width:50%;
+}
