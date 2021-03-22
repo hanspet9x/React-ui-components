@@ -1,0 +1,55 @@
+.hp-accordion{
+    position: relative;
+}
+
+.hp-accordion > ul, .hp-accordion > ul > li:first-child > svg{
+    transition: 1s;
+}
+
+.hp-accordion .hp-accordion-list{
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    height:45px;
+    overflow: hidden;
+}
+
+.hp-accordion .hp-accordion-list > li:first-child{
+    height:45px;
+    display: inline-block;
+}
+
+.hp-accordion .hp-accordion-list > li:first-child > svg{
+    transform: rotate(0deg);
+}
+
+.hp-accordion .hp-accordion-list > li{
+    width: calc(100% - 20px);
+    padding: 10px 15px;
+    margin: 0px 10px;
+    box-sizing: border-box;
+   
+}
+
+.hp-accordion .hp-accordion-list > li:first-child{
+    border-bottom:solid 1px #f0f0f0;
+}
+
+.hp-accordion .hp-accordion-list > li:first-child > h3{
+    display: inline;
+    margin: 0px;
+    padding: 0px;
+}
+
+.hp-accordion .hp-accordion-list > li:first-child > svg{
+    float: right;
+}
+
+.hp-accordion .hp-accordion-collpased{
+    height: auto;
+    overflow: visible;
+}
+
+.hp-accordion .hp-accordion-collpased > li:first-child > svg{
+    transform: rotate(180deg);
+}
