@@ -1,49 +1,37 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, {useState} from 'react';
 
 
-function FormSwitch(props) {
+function FormSwitch({name, values = ["yes", "no"], onChange, value}) {
     
     const defaultStyle = {backgroundColor: "#eef0ee", left: "5px"};
     const activeStyle = {backgroundColor: "#ddffdd", left: "40px"};
-    const vals = useMemo(()=> props.values !== undefined? props.values: ["yes", "no"], [props.values]);
 
-    const [state, setState] = useState(false);
-    const [style, setStyle] = useState(defaultStyle);
-    const [value, setValue] = useState(vals[1]);
+
+    let defState = (value !== undefined && value === values[0])? true : false;
+    
+    const [state, setState] = useState(defState);
 
     const onSwitch =()=>{
         
         setState(!state);
-
-        if(!state){
-            setStyle(activeStyle);
-            setValue(vals[0]);
-        }else{
-            setStyle(defaultStyle);
-            setValue(vals[1]);
+        let e = {
+            target:{
+                name: name,
+                value: state === true?values[1]:values[0]
+            }
         }
-
+        onChange(e);
         
     }
 
-    useEffect(()=>{
-        let e = {
-            target:{
-                name: props.name,
-                value: state === true?vals[0]:vals[1]
-            }
-        }
-        props.onChange(e);
-    }, [props, state, vals]);
-
-    return(
-        <>
-                <div className="HPradio" style={{backgroundColor: style.backgroundColor}}>
-                    <div onClick={onSwitch} style={{left: style.left}}></div>
+    return( 
+        <React.Fragment>
+                <div className="HPradio" style={{backgroundColor: state?activeStyle.backgroundColor: defaultStyle.backgroundColor}}>
+                    <div onClick={onSwitch} style={{left: state?activeStyle.left : defaultStyle.left}}></div>
                 </div>
-                <span className="HpradioText">{props.values !== undefined? value: ""}</span>
-                <input type="hidden" name={props.name} value={state} />
-        </>
+                <span className="HpradioText">{state? values[0] : values[1]}</span>
+                <input type="hidden" name={name} value={state} />
+        </React.Fragment>
     );
 }
 export default FormSwitch;

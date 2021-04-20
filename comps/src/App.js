@@ -1,12 +1,13 @@
 import React from 'react';
-import {Provider} from './Provider';
-import Home from './Home/Home';
+import {Provider} from './services/Provider';
 import Dialog from './ui/Dialog';
+import Navigation from './Navigation';
+
 function App() {
-    
+
     return (
         <Provider>
-            <Home />
+            <Navigation />
             <Dialog />
         </Provider>
     );

@@ -3,7 +3,7 @@ import React, { useRef, useEffect, useLayoutEffect } from 'react';
 export const CENTER = 1;
 export const BOTTOM = 0;
 
-function ViewsHolder({children, type = 0, labels = ["next", "prev"]}) {
+function ViewsHolder({children, type = 0, labels = ["Next", "Prev"]}) {
     let slidesSize = [];
 
     let values = labels.slice(0);
@@ -63,7 +63,6 @@ function ViewsHolder({children, type = 0, labels = ["next", "prev"]}) {
 
 
     useEffect(()=>{
-        console.log("effect")
        /*  for (let i = 0; i < viewsRef.current.children.length; i++) {
             slidesSize.push({
                 w: viewsRef.current.children[i].offsetWidth, 
@@ -75,7 +74,6 @@ function ViewsHolder({children, type = 0, labels = ["next", "prev"]}) {
 
     useLayoutEffect(()=>{
 
-        console.log("layout");
         for (let i = 0; i < viewsRef.current.firstChild.children.length; i++) {
             slidesSize.push({
                 w: viewsRef.current.firstChild.children[i].offsetWidth, 
@@ -91,7 +89,6 @@ function ViewsHolder({children, type = 0, labels = ["next", "prev"]}) {
 
         viewsRef.current.lastChild.style.width =  `${slidesSize[slide].w}px`;
     
-        console.log(slidesSize);
     }
     return(
 

@@ -10,7 +10,7 @@ useLayoutEffect(()=>{
         size.push(parseInt(pages[i].offsetHeight)); 
         
     }
-    pagesRef.current.style.height = `${parseInt(size.sort((a, b)=> b-a)[0])+20}px`;
+    pagesRef.current.style.height = `${size.sort((a, b)=> b-a)[0]}px`;
 
 });
 

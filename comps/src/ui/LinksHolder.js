@@ -16,12 +16,12 @@ var options = "";
     
     var handleKeyChange =e=>{
         
-        if(e.keyCode === 32){
+        if(e.keyCode === 32 || e.which === 32){
             setData(data=> data.concat(search));
             e.target.value = "";
         }
 
-        if(e.keyCode === 8){
+        if(e.keyCode === 8 || e.which === 8){
             if(data.length > 0){
                 data.pop();
                 var left = data.slice();
@@ -72,7 +72,7 @@ var options = "";
                         <span className="close"></span>
                     </div>
                 ))}               
-                <input list="options" onKeyUp={handleKeyChange} 
+                <input list="options" onKeyDown={handleKeyChange} 
                 onChange={handleInputChange} className="link-search" 
                 defaultValue={search}
                 ref = {inputRef}

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import DialogAlert from './DialogAlert';
 import DialogConfirm from './DialogConfirm';
-import {Consumer} from '../Provider'
+import {Consumer} from '../services/Provider'
 
-class Dialogue extends Component {
+class Dialog extends Component {
     //receives str message, int type
 
 
@@ -46,4 +46,4 @@ class Dialogue extends Component {
     }
 }
 
-export default Dialogue;
+export default Dialog;

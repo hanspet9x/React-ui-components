@@ -181,9 +181,9 @@ class FormPicture extends Component {
                     && (this.state.cw + this.state.x) <= this.palletteRef.current.offsetWidth 
                     && (this.state.ch + this.state.y) <= this.palletteRef.current.offsetHeight ){
                         
-                        let data = this.canvasRef.current.toDataURL();
+                        
                         this.setState({imageData: null, image: null,
-                            croppedImageData: data});
+                            croppedImageData: this.canvasRef.current.toDataURL()});
                        this.canvasColor(0);
                        this.onClearCanvas();
                        
@@ -206,7 +206,6 @@ class FormPicture extends Component {
       }
       
       closeMe =()=>{
-          
         this.setState({imageData: null});
       }
 
@@ -214,24 +213,20 @@ class FormPicture extends Component {
 
     render() {
         return (
-            <div className="form-file-dp"> 
-
+            <div className="form-file-dp" >                
                 <div id="image-showcase">
                     
-                    <div style={{display:this.state.croppedImageData === "" ?"flex":"none"}}>
-                        <em>DP</em>
-                    </div>
-                    
-                    <img src={this.state.croppedImageData} alt="dp" style={{display:this.state.croppedImageData !== "" ?"block":"none"}}/>
-                    
+                    <img src={this.props.value !== undefined ? this.props.value : this.state.croppedImageData} alt="" />
+                    {this.state.croppedImageData === "" ? <svg className="form-file-avatar" stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 448 512" height="2em" width="2em" >
+                    <path d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path>
+                </svg>: ""}
                     <label htmlFor="form-dp-picker" id="image-picker">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M18 14.45v6.55h-16v-12h6.743l1.978-2h-10.721v16h20v-10.573l-2 2.023zm1.473-10.615l1.707 1.707-9.281 9.378-2.23.472.512-2.169 9.292-9.388zm-.008-2.835l-11.104 11.216-1.361 5.784 5.898-1.248 11.103-11.218-4.536-4.534z"/></svg>
+                    <svg className="form-file-choose" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M18 14.45v6.55h-16v-12h6.743l1.978-2h-10.721v16h20v-10.573l-2 2.023zm1.473-10.615l1.707 1.707-9.281 9.378-2.23.472.512-2.169 9.292-9.388zm-.008-2.835l-11.104 11.216-1.361 5.784 5.898-1.248 11.103-11.218-4.536-4.534z"/>
+                    </svg>
                     </label>
-                    
                     <input id="form-dp-picker" type="file" onChange={this.onfileSelected} />
-                    
                     <input type="hidden" name={this.props.name} value={this.state.croppedImageData}/>
-                    
                 </div>
                 
                 <div id="image-crop-dialogue" style={{display: (this.state.imageData === null)?"none":"block"}}>

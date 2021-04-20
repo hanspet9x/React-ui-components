@@ -16,31 +16,31 @@ class ButtonLoader extends Component {
 
     btnClicked(e){
         if(this.props.active !== undefined && this.props.active ===true){
-           this.btnState();
+           this.btnState(e);
 
         }else if(this.props.active === undefined){
-            this.btnState2();
+            this.btnState2(e);
         }
         
     }
 
-    btnState(){
+    btnState(e){
             
         if(this.props.onClick !== undefined){            
                      
-            this.props.onClick();
+            this.props.onClick(e);
 
         }
     }
 
-    btnState2(){
+    btnState2(e){
         this.toggleState();
         if(this.props.onClick !== undefined){            
             
             var offAnim = ()=>{
                 this.toggleState();
             };
-            this.props.onClick(offAnim);
+            this.props.onClick(offAnim, e);
 
         }
         
@@ -82,7 +82,7 @@ class ButtonLoader extends Component {
         
         this.onRender();
         return (
-            <button id = {this.props.id} className={this.classID} onClick={this.btnClicked} disabled={this.state.showAnim} 
+            <button type={this.props.type} name={this.props.name} id = {this.props.id} className={this.classID} onClick={this.btnClicked} disabled={this.state.showAnim} 
             >                
                 {this.props.rtl === undefined? this.src: ""}
                 <span style = {this.style}>{this.name}</span>

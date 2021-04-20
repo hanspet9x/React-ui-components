@@ -5,7 +5,8 @@ function Switch(props) {
     var left = (props.xs !== undefined)?["2.5px", "20px"]:["5px", "40px"];
     var classname = (props.xs !== undefined)? "HPradio HPradio-xs": "HPradio";
     const defaultStyle = {backgroundColor: "#eef0ee", left: left[0]};
-    const activeStyle = {backgroundColor: "#ddffdd", left: left[1]};
+    // const activeStyle = {backgroundColor: "#ddffdd", left: left[1]};
+    const activeStyle = {backgroundColor: "#0a066f", left: left[1]};
     const vals = props.values !== undefined? props.values: ["yes", "no"];
 
     const [state, setState] = useState(false);

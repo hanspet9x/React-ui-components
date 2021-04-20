@@ -1,22 +1,23 @@
 import React from 'react';
 import PasswordField from './PasswordField';
 
-function ImageField({onChange, src, onBlur, id, className, name, type, data, placeholder, readOnly, required, tag, children,defaultValue, value}) {
+function LabelField({onChange, onBlur, maxLength, minLength,label, id,pattern, className,inputProps, name, title, type, data, placeholder, 
+    readOnly, required, tag, children,defaultValue, value, on}) {
+
+    //Set name as id if ID is not found
+    id = id || name;
+    let classname = className === undefined ? "label-field" : `${className} label-field`;
     const handleChange =(e)=>{
         onChange(e);
     }
+
     const handleBlur =(e)=>{
+
         if(onBlur !== undefined){
             onBlur(e);
         }
     }
-    var objRep = null;
 
-    if(typeof src === "string"){
-        objRep = <img src={src} alt="input-img" />;
-    }else{
-        objRep = src;
-    }
 
     var mainTag = null;
     switch (tag) {
@@ -27,9 +28,13 @@ function ImageField({onChange, src, onBlur, id, className, name, type, data, pla
             placeholder={placeholder} 
             required={required} 
             name={name} 
+            pattern={pattern}
+            inputProps={inputProps}
             value={value}
             defaultValue={defaultValue}
             data-type={data}
+            maxLength={maxLength}
+            minLength={minLength}
             readOnly={readOnly}
             onBlur = {handleBlur}
             onChange={handleChange} />
@@ -40,6 +45,8 @@ function ImageField({onChange, src, onBlur, id, className, name, type, data, pla
             id={id}
             className={className} 
             name={name} 
+            pattern={pattern}
+            inputProps={inputProps}
             value={value}
             defaultValue={defaultValue}
             data-type={data}
@@ -51,14 +58,19 @@ function ImageField({onChange, src, onBlur, id, className, name, type, data, pla
             mainTag = <textarea 
             placeholder={placeholder} 
             id={id}
+            maxLength={maxLength}
+            minLength={minLength}
             className={className}
+            pattern={pattern}
             required={required} 
             name={name} 
             value={value}
             defaultValue={defaultValue}
             data-type={data}
             readOnly={readOnly}
+            inputProps={inputProps}
             onBlur = {handleBlur}
+            spellCheck
             onChange={handleChange} />
             break;
         case "p":
@@ -68,10 +80,15 @@ function ImageField({onChange, src, onBlur, id, className, name, type, data, pla
             className={className}
             required={required} 
             name={name}
+            pattern={pattern}
+            inputProps={inputProps}
+            maxLength={maxLength}
+            minLength={minLength}
             onBlur = {handleBlur}
             defaultValue={defaultValue}
             readOnly={readOnly}
             data-type={data}
+            
             onChange={handleChange} />
             break;
         default:
@@ -80,23 +97,27 @@ function ImageField({onChange, src, onBlur, id, className, name, type, data, pla
             id={id}
             className={className}
             required={required} 
+            maxLength={maxLength}
             name={name} 
+            pattern={pattern}
+            inputProps={inputProps}
+            minLength={minLength}
             data-type={data}
             value={value}
             readOnly={readOnly}
             onBlur = {handleBlur}
             defaultValue={defaultValue}
-            onChange={handleChange} />
-            
+            onChange={handleChange} />       
             break;
     }
     
+    
     return(
-        <div className="img-form">
-            {objRep}
+        <div className={classname}>
+            <label><span>{on !== undefined ? "*" : ""}</span>{label}</label>
             {mainTag}
         </div>
     );
 }
 
-export default ImageField;
+export default LabelField;

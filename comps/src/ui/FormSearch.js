@@ -17,7 +17,7 @@ class FormSearch extends Component {
             formType: this.initFormType(this.type),
             formList: null,
             loading: false,
-            cleared: false //-clear formlist: false shows formList, true hides it
+            cleared: false
         }
         this.noSearch = "no result found.";
         
@@ -25,7 +25,6 @@ class FormSearch extends Component {
 
 
     static getDerivedStateFromProps(props, state) {
-
         if(typeof props.onInputResults === "object" && props.onInputResults.length > 0 && state.cleared === false){
             
             let resultList = props.onInputResults.map((e, i) =>{
@@ -49,16 +48,12 @@ class FormSearch extends Component {
     handleSubmit = (e)=>{
         e.preventDefault();
     }
-    
     handleChange =(e)=>{
         const value = e.target.value;
         this.setState({cleared: false});
 
-        /**
-         * if sear input has no value
-         */
         if(value.length === 0){
-            
+            this.props.onChange(null);
             this.setState({formList: "", formsearch: ""});
             if(this.type === 1){
                 this.setState({cleared: true});
@@ -66,9 +61,6 @@ class FormSearch extends Component {
             return;
         }
 
-        /**
-         * show typed value
-         */
         this.setState({formsearch: value});
 
         if(this.type === 0){
@@ -92,7 +84,9 @@ class FormSearch extends Component {
 
 
     componentDidMount(){
-        if(this.props.onSelectedSearch === undefined && this.props.onChange === undefined && this.props.onInputResults === undefined) throw new Error("FormSearch: this.props.onSelectedSearch or onInputResults or onSelectedSearch is undefined!");
+        //if(this.props.onSelectedSearch === undefined && this.props.onChange === undefined && this.props.onInputResults === undefined) throw new Error("FormSearch: this.props.onSelectedSearch or onInputResults or onSelectedSearch is undefined!");
+       if(this.props.onChange === undefined) throw new Error("FormSearch: this.props.onChange is undefined!");
+
     }
 
     componentDidUpdate(){
@@ -113,7 +107,7 @@ class FormSearch extends Component {
                         <input  type="search" name="formsearch" 
                         value={this.state.formsearch}  
                         onChange={this.handleChange} 
-                        placeholder="Search Joke" 
+                        placeholder={this.props.placeholder?this.props.placeholder:"Search.."}
                          />
                         {this.state.formType}                        
                     </div>

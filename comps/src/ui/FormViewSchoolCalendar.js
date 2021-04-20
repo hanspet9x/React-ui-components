@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import "./FormViewCalendar.css";
-import { MdKeyboardArrowUp, MdKeyboardArrowDown, MdEvent } from "react-icons/md";
-import ImageField from './ImageField';
+import { MdKeyboardArrowUp, MdKeyboardArrowDown} from "react-icons/md";
+import {GoCheck} from "react-icons/go";
+import LabelField from './LabelField';
+//import { Values, getUserDetails } from '../../services/constant';
 import ButtonLoader from './ButtonLoader';
-import { GoCheck } from 'react-icons/go';
-import {AiOutlinePlus} from  'react-icons/ai';
-import Switch from './../ui/Switch';
- import Selector from './Selector';
- import LabelFieldFormat from './LabelFieldFormat';
 import { Store } from '../services/HP';
-import { Values } from '../services/constant';
+import { Values,getUserDetails } from '../services/constant';
 
-
-function FormViewCalendar({onChange, name, onEventCreate, showForm = true, data}){
+function FormViewSchoolCalendar({onChange, name, onEventCreate, showForm = true, data}){
 
     let dateMonitor = -1;
     let dateEvent = null;
@@ -29,7 +25,6 @@ function FormViewCalendar({onChange, name, onEventCreate, showForm = true, data}
         setDates(prevCurDates);
     },[monthYear]);
 
- 
     const handleMonthChange =(dir)=>{
         if(dir === "prev"){
             setMonthYear(monthYear => {
@@ -68,6 +63,8 @@ function FormViewCalendar({onChange, name, onEventCreate, showForm = true, data}
     const dateFormat = (date)=>{
         return monthYear.year+"-"+dualize(monthYear.month+1)+"-"+dualize(date);
     }
+
+  
 
     const dateInData = (date) =>{
         
@@ -175,20 +172,19 @@ function FormViewCalendar({onChange, name, onEventCreate, showForm = true, data}
 
             </div>
                         
-            <CalendarForm onEventCreate={onEvent} hideForm={hideForm} date={formCalendar.formDate} show={formCalendar.show} />
+            <CalendarForm2 onEventCreate={onEvent} hideForm={hideForm} date={formCalendar.formDate} show={formCalendar.show} />
             <CalendarView date={viewCalendar.date} handleDate={handleDate} data={viewCalendar.data} show={viewCalendar.show} hideForm={hideForm}/>
         </div>
     );
 }
 
 
-function CalendarForm({date, show, hideForm, onEventCreate}){
+function CalendarForm2({date, show, hideForm, onEventCreate}){
 
     let fields = {
-        academicperiod: "", category: "", name: "", level: "" ,classes: "",tentativedate: "",start:"", end:"",
-        starttime:"",endtime:"",description:"" , classCategory:"",examTerm:"",calendartype:""
+        name: "", start: "", end: "", description: "",academicperiod:"",starttime: "",endtime: "", schoolId: ""
     }
-   
+
     
     let cName = show === true?"form-view-calendar-form-show":"form-view-calendar-form-hide";
 
@@ -202,16 +198,6 @@ function CalendarForm({date, show, hideForm, onEventCreate}){
 
         setState({...state, [name]: value});
     }
-
-   
-
-
-    const loadDefault = () => {
-         const settings = Store.get(Values.settings, 1).split(",");
-         state.academicperiod= settings[2]
-         state.examTerm = settings[3]
-     }
-     loadDefault();
 
     const handleSubmit = (e)=>{
         e.preventDefault();
@@ -235,168 +221,61 @@ function CalendarForm({date, show, hideForm, onEventCreate}){
         hideForm();
     }
 
-    // switchHandler = (val) => {
-    //     if (this.state.tentativedate !== val) {
-    //         this.setState({tentativedate: val});
-    //         this.fields["tentativedate"] = val;
-    //     }
+    const loadDefault = () => {
+        const settings = Store.get(Values.settings, 1).split(",");
+        state.academicperiod= settings[2]
+        state.examTerm = settings[3]
+     //   state.schoolId = settings[4]
+    }
+     loadDefault();
+   
+    // const staffEpmisId = Store.get(Values.epmisUserid, 1);
+    // getUserDetails.academic(staffEpmisId, (data) =>{
+    //     const schoolId = data.schooldata.epmisId;
     // }
+    // )
+
+ 
+
     return(
         <div className={`form-view-calendar-form ${cName}`}>
             <div className="form-view-calendar-form-title-close">
-                <h2 className="form-cal">Create Event</h2>
+                <h2 className="form-cal">Create School Event</h2>
                 <div className="form-view-calendar-form-close t-right">
                     <span onClick={closeForm}>&times;</span>
                 </div>
             </div>
             <form className="form-block" onSubmit={handleSubmit}>
-            
-                <label>Academic Session </label>
-                 
-                 <ImageField   name='academicperiod' value={state.academicperiod} onChange={inputChange} readOnly />
-               <label>Calendar Type</label>
-               <ImageField tag='s' name='calendartype' value={state.calendartype} onChange={inputChange}>
-                 <option value="">-Select Calendar Type-</option>
-                 <option value="Ministry">Ministry</option>
-                 <option value="School">School</option>
-             </ImageField>
-                            
-                <div className='form-block'>
-                <label>Category</label>
-                        <ImageField  tag = 's' name='category' value={state.category} onChange={inputChange}  >
-                                 <option value="">-Select Category-</option>
-                                 <option value="Academic">Academic</option>
-                                 <option value="Examinations">Examinations</option>
-                                 <option value="Extra-Curricular">Extra-Curricular</option>
-                             </ImageField>
-                             {
-                        (state.category === "Examinations")?
-                            <div className='form-block'>
-                                <label>Term</label>
-                                <ImageField   name='examTerm' value={state.examTerm} onChange={inputChange} readOnly />
-                       
-                            </div>
-                         :
-                            null
-                        
-                    }
-                         </div>
-                     <div className="form-block">
-                    <label>Name</label>
-                   
-                    <ImageField required={true}  onChange={inputChange}  src={<MdEvent />} name="name" value={state.name}/>
-                </div>
-                {
-                   state.calendartype === "school"?
-                    <div className='form-block'>
-                        <label>School Category</label>
-                        <ImageField  tag ='s' name='level' value={state.level} onChange={inputChange}  >
-                            <option value="">-Select Category-</option>
-                            <option value="Primary">Primary</option>
-                            <option value="Junior">Junior</option>
-                            <option value="Senior">Senior</option>
-                            <option value="Secondary">Secondary</option>
-                            <option value="Technical">Technical</option>
-                            <option value="All">All</option>
-                        </ImageField>
-                    </div> : null
-                }
-                            {
-                            (state.level === "Primary")?
-                                <div className='form-block'>
-                                <label >Class Category</label>
-                                    <select name='classCategory' value={state.classCategory} onChange={inputChange} >
-                                        <option value="">Select Level</option>
-                                        <option value="Primary1">Primary1</option>
-                                        <option value="Primary2">Primary2</option>
-                                        <option value="Primary3">Primary3</option>
-                                        <option value="Primary4">Primary4</option>
-                                        <option value="Primary5">Primary5</option>
-                                        <option value="primary6">Primary6</option>
-                                        <option value="All">All</option>
-                                    </select>
-                                </div>
-                            :
-                                null
-                            
-                        }
-                        {
-                            (state.level === "Junior")?
-                                <div className='form-block'>
-                                <label >Class Category</label>
-                                    <select name='classCategory' value={state.classCategory} onChange={inputChange} >
-                                        <option value="">Select Level</option>
-                                        <option value="JSS1">JSS1</option>
-                                        <option value="JSS2">JSS2</option>
-                                        <option value="JSS3">JSS3</option>
-                                        <option value="All">All</option>
-                                    </select>
-                                </div>
-                            :
-                                null
-                        }
-                        {
-                            (state.level === "Senior")?
-                                <div className='form-block'>
-                                <label>Class Category</label>
-                                    <select name='classCategory' value={state.classCategory} onChange={inputChange} >
-                                        <option value="">Select Level</option>
-                                        <option value="SSS1">SSS1</option>
-                                        <option value="SSS2">SSS2</option>
-                                        <option value="SSS3">SSS3</option>
-                                        <option value="All">All</option>
-                                    </select>
-                                </div>
-                            :
-                                null
-                        }
-                        {
-                            (state.level === "Technical")?
-                                <div className='form-block'>
-                                <label >Class Category</label>
-                                    <select name='classCategory' value={state.classCategory} onChange={inputChange} >
-                                        <option value="">Select Level</option>
-                                        <option value="JSS1">Tech1</option>
-                                        <option value="JSS2">Tech2</option>
-                                        <option value="JSS3">Tech3</option>
-                                        <option value="All">All</option>
-                                    </select>
-                                </div>
-                            :
-                                null
-                        } 
-                        
+       
 
-                            <LabelFieldFormat label="Tentative Date">
-                                        <Selector label="Tentative Date" value={state.tentativedate} values={["Yes", "No"]} onChange={inputChange} name="tentativedate" />
-                                    </LabelFieldFormat> 
-
-                        <div className="form-inline">
-                        <label>Start Date</label>
-                        <ImageField required={true}  onChange={inputChange} type="date"  name="start" value={state.start}/>
-                    </div>
-                <div className="form-inline">
-                    <label>End Date</label>
-                    <ImageField required={true}  onChange={inputChange} type="date"  name="end" value={state.end}/>
-                </div>
-                    <div className="form-inline">
-                    <label>Start Time</label>
-                    <ImageField required={true}  onChange={inputChange} type="time"  placeholder={date} name="starttime" value={state.starttime} />
-                </div>
-                <div className="form-inline">
-                    <label>End Time</label>
-                    <ImageField required={true}  onChange={inputChange} type="time"  name="endtime" value={state.endtime}/>
-                </div>
-                {/* <ImageField>
-                    <label>Tentative Date</label>
-                        <Switch value={state.tentativedate} onChange={inputChange} name="tentativedate" values={["Yes", "No"]} />
-                    </ImageField> */}
-
-                <label>Description</label>
-                <ImageField required={true}  onChange={inputChange} type="date"  tag="t" name="description" value={state.description}/>
-                <div className="form-view-calendar-error">{error}</div>
-                <ButtonLoader className="main-button" src={<GoCheck/>}>Create</ButtonLoader>
+            {/* <LabelField label="School Id" name='schoolId' onChange={inputChange} defaultValue={state.schoolId} placeholder="school id"  /> */}
                 
+                <LabelField label="Name" required={true} onChange={inputChange}  name="name" value={state.name}/>
+     
+                <div className="form-block">
+                    
+                    <LabelField label="Academic Session" data="session" required={true}  onChange={inputChange} type="text"   name="academicperiod" defaultValue={state.academicperiod} readOnly />
+                </div>
+                <div className="form-block">
+                    
+                    <LabelField label="Start" required={true}  onChange={inputChange} type="date"  placeholder={date} name="start" value={state.start} />
+                </div>
+                <div className="form-block">
+                    
+                    <LabelField label="End" required={true}  onChange={inputChange} type="date"  name="end" value={state.end}/>
+                </div>
+                <div className="form-block">
+                    
+                    <LabelField label="Start Time" required={true}  onChange={inputChange} type="time"  name="starttime" value={state.starttime}/>
+                </div>
+                <div className="form-block">
+                
+                    <LabelField label="End Time" required={true}  onChange={inputChange} type="time" name="endtime" value={state.endtime}/>
+                </div>
+            
+                <LabelField label="Description"required={true}  onChange={inputChange} type="date"  tag="t" name="description" value={state.description}/>
+                <div className="form-view-calendar-error">{error}</div>
+                <ButtonLoader className="main-button" src={<GoCheck/>}>Create Event</ButtonLoader>
             </form>
         </div>
     )
@@ -439,7 +318,7 @@ function CalendarView({date, handleDate, data, show, hideForm}){
     return(
         <div className={`form-view-calendar-form ${cName}`}>
             <div className="form-view-calendar-form-title-close">
-                <h2 className="form-cal form-view-calendar-start ttu" >{data.name}</h2>
+                <h2 className="form-cal">{data.name}</h2>
                 <div className="form-view-calendar-form-close t-right">
                     <span onClick={closeForm}>&times;</span>
                 </div>
@@ -448,26 +327,31 @@ function CalendarView({date, handleDate, data, show, hideForm}){
             <div>
             
             <p>
-                <span className="form-view-calendar-view-label ttu">From:</span> 
+                <span className="form-view-calendar-view-label">From:</span> 
                 <b>{data.start} </b>
             </p>
             <p>
-                <span className="form-view-calendar-view-label ttu">To:</span> 
+                <span className="form-view-calendar-view-label">To:</span> 
                 <b>{data.end}</b> 
             </p>
             <br></br>
             <div>
-                <span className="form-view-calendar-view-label ttu">Description:</span> 
+                <span className="form-view-calendar-view-label">Start time:</span> 
+                <b>{data.starttime}</b>
             </div>
-            <p className="form-view-calendar-description ttu">{data.description}</p>
+            <div>
+                <span className="form-view-calendar-view-label">End time:</span> 
+                <b>{data.endtime}</b>
+            </div>
+            <div>
+                <span className="form-view-calendar-view-label">Description:</span> 
+            </div>
+            <p className="form-view-calendar-description">{data.description}</p>
         
             </div>
-            <div className="form-view-calendar-view-update t-left">
-                 <button onClick={onUpdate}>{<AiOutlinePlus/>}New Event</button>
-            </div>
-            {/* <div className="form-view-calendar-view-update t-right">
+            <div className="form-view-calendar-view-update t-right">
                 <span onClick={onUpdate}>Update</span>
-            </div>  */}
+            </div>
         </div>
     );
 }
@@ -491,11 +375,11 @@ function init (monthYear){
 }
 
 function getMonthFirstDay(month, year){
-    let start = new Date();
-     start.setDate(1);
-     start.setMonth(month);
-     start.setFullYear(year);
-     return start.getDay();
+    let startDate = new Date();
+     startDate.setDate(1);
+     startDate.setMonth(month);
+     startDate.setFullYear(year);
+     return startDate.getDay();
 }
 
 
@@ -626,4 +510,4 @@ function monthYearMonitor(monthInt, year){
 
     
 }
-export default FormViewCalendar;
+export default FormViewSchoolCalendar;
