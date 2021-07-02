@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
+import { HP } from '../utils/HP';
 
-function LoadingBar({show}){
+function LoadingBar({show, style = {}}){
 
     useEffect(()=>{
         if(show === undefined){
@@ -10,7 +11,7 @@ function LoadingBar({show}){
 
     return (
         
-        <div className="loading-bar" style={{opacity: show===true || show === 1?1:0}}>
+        <div className="loading-bar" style={HP.combineStyles({opacity: show===true || show === 1?1:0}, style)}>
             <div></div>
         </div>
     );

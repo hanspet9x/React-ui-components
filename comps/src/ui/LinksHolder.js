@@ -1,93 +1,111 @@
-import React, { useState, useRef} from 'react';
-import './../ui/LinksHolder.css';
-import PropTypes from "prop-types";
-function LinksHolder(props) {
-    
-   // required for listing prop.listKey and prop.list = [{listKey}]
+import React, { useState, useRef } from 'react';
+import './LinksHolder.css';
+import { useEffect } from 'react';
+import { useReducer } from 'react';
+
+const reducer = (state, action) => {
+
+    return { ...state, ...action };
+}
+
+function LinksHolder({ options = [], values = [], onChange, name }) {
+
+    // required for listing prop.listKey and prop.list = [{listKey}]
     const [search, setSearch] = useState("");
-    const [data, setData] = useState([]);
+
+    const [state, dispatch] = useReducer(reducer, { data: [] });
+
     const inputRef = useRef(null);
-var options = "";
-    if(props.options !== undefined){
-            options = props.options.map((list, i)=>{
-            return <option key={i} value={list}>{list}</option>
-        });
-    }
-    
-    var handleKeyChange =e=>{
-        
-        if(e.keyCode === 32 || e.which === 32){
-            setData(data=> data.concat(search));
+    const prevRef = useRef();
+
+
+    var handleKeyChange = e => {
+
+        if (e.keyCode === 32 || e.which === 32) {
+            dispatch({ data: state.data.concat(search) })
             e.target.value = "";
-        }
-
-        if(e.keyCode === 8 || e.which === 8){
-            if(data.length > 0){
-                data.pop();
-                var left = data.slice();
-                setData(left);
-            }
-        }
-    }
-
-    
-    var handleInputChange = e =>{
-        setSearch(e.target.value);
-        if(props.onChange){
-            let obj = {
-                target: {
-                    name: props.name,
-                    value: data.join(",")
+            if (onChange) {
+                let obj = {
+                    target: {
+                        name: name,
+                        value: state.data.join(",")
+                    }
                 }
+                onChange(obj);
             }
-            props.onChange(obj);
+        }
+
+        if (e.keyCode === 8 || e.which === 8) {
+            if (state.data.length > 0) {
+                state.data.pop();
+                dispatch({ data: state.data })
+            }
         }
     }
 
-    var removeData =e=>{
+
+    var handleInputChange = e => {
+        setSearch(e.target.value);
+    }
+
+    var removeData = e => {
         var evt = e.target;
-        if(!e.target.id){
+        if (!e.target.id) {
             evt = e.target.parentNode;
         }
-        const i = data.indexOf(evt.id);
-        data.splice(i, 1);
-        var rem = data.slice();
-        setData(rem);
+        const i = state.data.indexOf(evt.id);
+        
+        dispatch({data: state.data.splice(i, 1)});
     }
 
-    // useEffect(()=>{
-    //     inputRef.current.focus();
-    // },[]);
+    useEffect(() => {
+        let sValues = values.join();
 
-   const handleFocus =()=>{
-       inputRef.current.focus();
-    //    <input type="hidden" name={props.name} value={data.join(',')} ref={dataRef} />
-   }
-    return( 
-            <div onClick={handleFocus}>
-                <div className="links-holder">
-                {data.map(data =>(
-                    <div className="links" key={data} id={data} onClick={removeData}>
+        if (sValues !== prevRef.current) {
+            console.log(sValues, prevRef.current);
+            dispatch({ data: values });
+            if (onChange) {
+                let obj = {
+                    target: {
+                        name: name,
+                        value: values.join(",")
+                    }
+                }
+                onChange(obj);
+            }
+        }
+        prevRef.current = sValues;
+    });
+
+    const handleFocus = () => {
+        inputRef.current.focus();
+        //    <input type="hidden" name={props.name} value={data.join(',')} ref={dataRef} />
+    }
+    return (
+        <div onClick={handleFocus}>
+            <div className="links-holder">
+                {state.data.map((data, i) => (
+                    <div className="links" key={i} id={data} onClick={removeData}>
                         <span>{data}</span>
                         <span className="close"></span>
                     </div>
-                ))}               
-                <input list="options" onKeyDown={handleKeyChange} 
-                onChange={handleInputChange} className="link-search" 
-                defaultValue={search}
-                ref = {inputRef}
-                 style={{width: "100px", border:"none", marginBottom: "0px"}}
-                 placeholder="type and space.."/>  
-                </div>
-                   
-                <datalist id="options" >
-                    {options}
-                </datalist>
+                ))}
+                <input list="options" onKeyDown={handleKeyChange}
+                    onChange={handleInputChange} className="link-search"
+                    defaultValue={search}
+                    ref={inputRef}
+                    style={{ width: "100px", border: "none", marginBottom: "0px", outline: 'none', backgroundColor: 'unset' }}
+                    placeholder="Type and Space.." />
             </div>
+
+            <datalist id="options" >
+                {options.map((list, i) => {
+                    return <option key={i} value={list}>{list}</option>
+                })}
+            </datalist>
+        </div>
     );
 }
 
-LinksHolder.propTypes = {
-    options: PropTypes.array.isRequired
-};
+
 export default LinksHolder;

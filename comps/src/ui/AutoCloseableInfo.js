@@ -42,6 +42,9 @@ class AutoCloseableInfo extends Component {
     }
 
     componentDidMount(){
+        /**
+         * internally invoked to close the view by changing info to an empty string.
+         */
         if(this.props.onChange === undefined)throw new Error("AutoCloseableInfo: onChange attribute not found!!")
         this.show();
     }

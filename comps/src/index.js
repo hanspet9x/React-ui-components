@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './hanspet.css';
-import './fonts.css';
+// import './fonts.css';
 import './index.css';
 import App from './App';
 // import reportWebVitals from './reportWebVitals';

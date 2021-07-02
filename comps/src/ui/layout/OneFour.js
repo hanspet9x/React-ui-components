@@ -1,6 +1,6 @@
 import React from 'react'
-import { HP } from '../../services/HP'
-import { containerChildrenPadding } from '../../services/layout_settings'
+import { HP } from '../../utils/HP'
+import { containerChildrenPadding } from '../../utils/layout_settings'
 
 export default function OneFour({children, style}) {
 

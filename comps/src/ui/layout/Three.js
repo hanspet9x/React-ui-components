@@ -1,6 +1,6 @@
 import React from 'react'
-import { HP } from '../../services/HP'
-import { containerChildrenPadding } from '../../services/layout_settings'
+import { containerChildrenPadding } from '../../utils/layout_settings'
+import { HP } from './../../utils/HP';
 
 export default function Three({children, style}) {
 

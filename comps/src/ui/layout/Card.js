@@ -1,7 +1,7 @@
 import React from "react";
-import { HP } from "../../services/HP";
+import { HP } from "./../../utils/HP";
 
-export default function Card({ style, children, center}) {
+export default function Card({ style, children, center, onClick = null}) {
   let custom = {
     position: "relative",
     borderRadius: 7,
@@ -20,5 +20,9 @@ export default function Card({ style, children, center}) {
     custom = HP.combineStyles(custom, centerStyle);
   }
   
-  return <div style={HP.combineStyles(custom, style)}>{children}</div>;
+  const handleClick = ()=>{
+    if(onClick !== null) onClick();
+
+  }
+  return <div onClick={handleClick} style={HP.combineStyles(custom, style)}>{children}</div>;
 }

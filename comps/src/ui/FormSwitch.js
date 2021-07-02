@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 
-function FormSwitch({name, values = ["yes", "no"], onChange, value}) {
+function FormSwitch({name, values = ["yes", "no"], onChange, value, titles=[]}) {
     
     const defaultStyle = {backgroundColor: "#eef0ee", left: "5px"};
     const activeStyle = {backgroundColor: "#ddffdd", left: "40px"};
@@ -17,11 +17,17 @@ function FormSwitch({name, values = ["yes", "no"], onChange, value}) {
         let e = {
             target:{
                 name: name,
-                value: state === true?values[1]:values[0]
+                value: state?values[0]:values[1]
             }
         }
         onChange(e);
         
+    }
+
+    let title = state? values[0] : values[1];
+
+    if(titles !== undefined){
+        title = state? titles[0] : titles[1];
     }
 
     return( 
@@ -29,7 +35,7 @@ function FormSwitch({name, values = ["yes", "no"], onChange, value}) {
                 <div className="HPradio" style={{backgroundColor: state?activeStyle.backgroundColor: defaultStyle.backgroundColor}}>
                     <div onClick={onSwitch} style={{left: state?activeStyle.left : defaultStyle.left}}></div>
                 </div>
-                <span className="HpradioText">{state? values[0] : values[1]}</span>
+                <span className="HpradioText">{title}</span>
                 <input type="hidden" name={name} value={state} />
         </React.Fragment>
     );
