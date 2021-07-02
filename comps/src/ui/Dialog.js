@@ -2,6 +2,8 @@ import React from 'react';
 import DialogAlert from './DialogAlert';
 import DialogConfirm from './DialogConfirm';
 import { connect } from 'react-redux';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 
 
 export const DIALOG_ALERT = "dig_A";
@@ -13,10 +15,6 @@ const getDialogAction = (type, message, callback) => {
 }
 
 let dispatcher = null;
-
-// export const hide=(hideAlert)=>{
-//         hideAlert();
-//     }
 
 export const alert = (message, callback = null)=>{
     dispatcher(getDialogAction(DIALOG_ALERT, message, callback));
@@ -41,6 +39,11 @@ const mapDispatchToProps = (dispatch)=> {
     }
 }
 
+/**
+ * The wrapper for dialog.
+ * @param {*} props
+ * @returns view
+ */
 const Wrapper = ({hide, confirmAction, type, message}) =>{
 
     var boxToShow;
@@ -84,5 +87,41 @@ const Wrapper = ({hide, confirmAction, type, message}) =>{
 }
 
 
-const Dialog = connect(mapStateToProps, mapDispatchToProps)(Wrapper); 
+const DialogWrapper = connect(mapStateToProps, mapDispatchToProps)(Wrapper); 
+
+
+
+const mainState = {
+ 
+    dialog: { 
+      type: DIALOG_HIDE, 
+      message: "", 
+      callback: null 
+    }
+      
+  };
+  
+const mainReducer = (state = mainState, action) => {
+    switch(action.type){
+      case DIALOG_ALERT:
+      case DIALOG_CONFIRM:
+      case DIALOG_HIDE:
+          return Object.assign({}, state, {dialog: action});
+                
+      default: 
+          return state;
+    }
+  };
+
+const store = createStore(mainReducer);
+
+const Dialog = ({children}) => {
+
+    return(
+        <Provider store = {store}>
+            {children}
+            <DialogWrapper />
+        </Provider>
+    );
+}
 export default Dialog;
