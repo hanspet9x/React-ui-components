@@ -1,9 +1,5 @@
 import React from 'react';
-import DialogAlert from './DialogAlert';
-import DialogConfirm from './DialogConfirm';
 import { connect } from 'react-redux';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
 
 
 export const DIALOG_ALERT = "dig_A";
@@ -24,11 +20,11 @@ export const confirm=(message, callback = null)=>{
     dispatcher(getDialogAction(DIALOG_CONFIRM, message, callback));
 }
 
-const mapStateToProps = (state)=>{
+const mapStateToProps = ({dialog})=>{
     return {
-        type : state.dialog.type,
-        message: state.dialog.message,
-        confirmAction: state.dialog.callback
+        type : dialog.type,
+        message: dialog.message,
+        confirmAction: dialog.callback
     }
 }
     
@@ -37,6 +33,48 @@ const mapDispatchToProps = (dispatch)=> {
     return {
         hide: ()=>dispatch(getDialogAction(DIALOG_HIDE, "", null)),
     }
+}
+
+const DialogAlert = ({message, onHide})=> {
+
+    
+    const closeDialogue = ()=>{
+        onHide();
+    }
+
+    
+        return (
+            <ul id="HPalert">
+                <li>Alert</li>
+                <li>{message}</li>
+                <li><button onClick={closeDialogue}>ok</button></li>
+            </ul>
+        );
+    
+}
+
+const DialogConfirm = ({onHide, onConfirm, message}) => {
+
+
+    const hide = ()=>{
+       onHide();
+    }
+
+    const confirm = ()=>{
+        onConfirm();
+    }
+
+
+        return (
+            <ul id="HPalert">
+                <li>Confirm</li>
+                <li>{message}</li>
+                <li>
+                    <button onClick={confirm}>ok</button>
+                    <button onClick={hide}>cancel</button>
+                </li>
+            </ul>
+        );
 }
 
 /**
@@ -87,41 +125,6 @@ const Wrapper = ({hide, confirmAction, type, message}) =>{
 }
 
 
-const DialogWrapper = connect(mapStateToProps, mapDispatchToProps)(Wrapper); 
+const Dialog = connect(mapStateToProps, mapDispatchToProps)(Wrapper); 
 
-
-
-const mainState = {
- 
-    dialog: { 
-      type: DIALOG_HIDE, 
-      message: "", 
-      callback: null 
-    }
-      
-  };
-  
-const mainReducer = (state = mainState, action) => {
-    switch(action.type){
-      case DIALOG_ALERT:
-      case DIALOG_CONFIRM:
-      case DIALOG_HIDE:
-          return Object.assign({}, state, {dialog: action});
-                
-      default: 
-          return state;
-    }
-  };
-
-const store = createStore(mainReducer);
-
-const Dialog = ({children}) => {
-
-    return(
-        <Provider store = {store}>
-            {children}
-            <DialogWrapper />
-        </Provider>
-    );
-}
 export default Dialog;

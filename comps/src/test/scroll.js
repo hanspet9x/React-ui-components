@@ -1,6 +1,6 @@
 import React from 'react';
-import { alert } from '../ui/Dialog';
 import EventBox from '../ui/EventBox';
+import { toast, TOAST_LONG } from '../ui/Toast';
 import { HP } from '../utils/HP';
 
 function Scroll(props) {
@@ -8,10 +8,11 @@ function Scroll(props) {
         <div style={{ border: 'solid 1px red', width: 400, textAlign: 'center' }}>
             <div style={styles.div}> </div>
             <div style={styles.div}> </div>
-            <button onClick={()=>alert("Hello")}>show alert</button>
+            <button onClick={()=>toast("Hello", TOAST_LONG)}>show alert</button>
             <EventBox title="Menu" >
                 <div style={HP.combineStyles(styles.div, { border: 'solid 1px green' })}> </div>
             </EventBox>
+            <div style={styles.div}> </div>
             <EventBox title="Menu 2" >
                 <div style={HP.combineStyles(styles.div, { border: 'solid 1px purple' })}> </div>
             </EventBox>

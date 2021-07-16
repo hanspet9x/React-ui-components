@@ -4,11 +4,14 @@ import './hanspet.css';
 // import './fonts.css';
 import './index.css';
 import App from './App';
+import HPcomponents from './ui/hpcomponents';
 // import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <HPcomponents>
+      <App />
+    </HPcomponents>
   </React.StrictMode>,
   document.getElementById('root')
 );

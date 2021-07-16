@@ -5,12 +5,16 @@ import { connect } from 'react-redux';
 const Vertical = "vertical";
 const Horizontal = "Horizontal";
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({eventBox}) => {
     return {
-        win: state
+        win: eventBox
     }
 }
-function Wrapper({ children, title, style, onViewIn, onViewBase, onView, onViewOut, onViewTotallyOut,  dir = Vertical, win = {wX: 0, wY: 0, wW: 0, wH: 0} }) {
+function Wrapper(
+    { children, title, style, onViewIn, 
+        onViewBase, onView, onViewOut, onViewTotallyOut,  
+        dir = Vertical, win = {wX: 0, wY: 0, wW: 0, wH: 0} }) {
+            
     const offset = 20;
 
     const pageRef = useRef(null);
@@ -22,20 +26,24 @@ function Wrapper({ children, title, style, onViewIn, onViewBase, onView, onViewO
 
     const _onViewBase = (scrolled) => {
         if(onViewBase !== undefined)onViewBase(scrolled);
+        console.log("onViewBase", title);
     }
 
     const _onView = (scrolled) => {
         if(onView !== undefined)onView(scrolled);
+        console.log("onView", title);
     }
 
   
     const _onViewOut = (scrolled) => {
         if(onViewOut !== undefined)onViewOut(scrolled);
+        console.log("onViewOut", title);
     }
 
 
     const _onViewTotallyOut = (scrolled) => {
         if(onViewTotallyOut !== undefined)onViewTotallyOut(scrolled);
+        console.log("onViewTotallyOut", title);
     }
 
     const monitor = () => {
